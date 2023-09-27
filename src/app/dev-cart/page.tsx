@@ -30,8 +30,6 @@ export default function DevCartPage() {
             </section>
             {/* /Produits */}
             {/* Panier */}
-            <CartCounter/>
-            <Cart/>
             {/* /Panier */}
         </SectionContainer>
     );
