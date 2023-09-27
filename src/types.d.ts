@@ -25,5 +25,6 @@ export type ProductLineData = {
 };
 
 export type CartData = {
-  lines: ProductLineData[]
+  lines: ProductLineData[],
+  count: number
 };

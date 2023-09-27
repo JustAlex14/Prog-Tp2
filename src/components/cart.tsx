@@ -1,5 +1,5 @@
 import { FC, ReactNode, memo } from "react";
-import { computeCartTotal, removeLine, updateLine, useCartStore } from "../hooks/use-cart";
+import { clearCart, computeCartTotal, removeLine, updateLine, useCartStore } from "../hooks/use-cart";
 import { Button, FormattedPrice, ProductCartLine } from "tp-kit/components";
 
 
@@ -15,7 +15,7 @@ const Cart: FC = props => {
             <FormattedPrice className="text-right" price={computeCartTotal(useCartStore((state => state.lines)))} />
         </div>
         <Button fullWidth>Commander</Button>
-        <Button variant={"outline"} fullWidth>Vider le panier</Button>
+        <Button variant={"outline"} onClick={() => clearCart()} fullWidth>Vider le panier</Button>
     </section>
 };
 
