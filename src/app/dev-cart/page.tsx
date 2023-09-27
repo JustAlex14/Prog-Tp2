@@ -3,9 +3,11 @@ import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
 import { Button, ProductCardLayout, SectionContainer } from "tp-kit/components";
 import {ProductCartLine} from "tp-kit/components/products";
 import {FormattedPrice} from "tp-kit/components/data-display";
+import { addLine } from "../../hooks/use-cart";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
 export default function DevCartPage() {
+    
     return (
         <SectionContainer
             className="py-36"
@@ -17,7 +19,7 @@ export default function DevCartPage() {
                     <ProductCardLayout
                         key={product.id}
                         product={product}
-                        button={<Button variant={"ghost"} fullWidth>Ajouter au panier</Button>}
+                        button={<Button variant={"ghost"} onClick={() => {addLine(product)}} fullWidth>Ajouter au panier</Button>}
                     />
                 ))}
             </section>

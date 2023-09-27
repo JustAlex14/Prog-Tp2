@@ -4,7 +4,7 @@ import {ProductData, ProductsCategoryData} from "tp-kit/types"
 
 
 
-const useCartStore = create<CartData>(() => ({lines: []}))
+export const useCartStore = create<CartData>(() => ({lines: []}))
 
 
 /**
@@ -20,7 +20,15 @@ export function addLine(product: ProductData) {
             qty: 1
         }
 
-        state.lines.push(productLineData)
+        const lineId = state.lines.findIndex(cartLine => cartLine.product.id === product.id)
+
+        if (lineId!=-1) 
+        state.lines[lineId].qty += 1
+        else
+            state.lines.push(productLineData)
+
+        
+        console.log(state.lines)
         return {lines: [...state.lines]}
     })
 }
@@ -35,10 +43,8 @@ export function updateLine(line: ProductLineData) {
         const lineId = state.lines.findIndex(cartLine => cartLine.product.id === line.product.id)
 
         state.lines[lineId] = line
-        
         return {lines: [...state.lines]}
     })
-   
 }
 
 /**
