@@ -42,7 +42,13 @@ export function updateLine(line: ProductLineData) {
     useCartStore.setState((state) => {
         const lineId = state.lines.findIndex(cartLine => cartLine.product.id === line.product.id)
 
+        /*
+        if (line.qty==0) 
+            state.lines.splice(lineId, 1)
+        else 
+        */
         state.lines[lineId] = line
+
         return {lines: [...state.lines]}
     })
 }
