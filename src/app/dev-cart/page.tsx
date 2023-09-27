@@ -5,6 +5,7 @@ import {ProductCartLine} from "tp-kit/components/products";
 import {FormattedPrice} from "tp-kit/components/data-display";
 import { addLine, computeCartTotal, removeLine, updateLine, useCartStore } from "../../hooks/use-cart";
 import { ProductLineData } from "../../types";
+import { Cart } from "../../components/cart";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
 export default function DevCartPage() {
@@ -28,18 +29,7 @@ export default function DevCartPage() {
             </section>
             {/* /Produits */}
             {/* Panier */}
-            <section className="w-full lg:w-1/3 space-y-8">
-                {lines.map(cartline => (
-                    <ProductCartLine product={cartline.product} qty={cartline.qty} onDelete={() => removeLine(cartline.product.id)} onQtyChange={value => {updateLine({...cartline, qty: value})}}></ProductCartLine>
-                ))}
-                
-                <div className="flex justify-between rounded-lg h-auto text-default overflow-hidden">
-                    <h1>Total:</h1>
-                    <FormattedPrice className="text-right" price={computeCartTotal(useCartStore((state => state.lines)))} />
-                </div>
-                <Button fullWidth>Commander</Button>
-                <Button variant={"outline"} fullWidth>Vider le panier</Button>
-            </section>
+            <Cart></Cart>
             {/* /Panier */}
         </SectionContainer>
     );
