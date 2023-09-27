@@ -6,6 +6,7 @@ import {FormattedPrice} from "tp-kit/components/data-display";
 import { addLine, computeCartTotal, removeLine, updateLine, useCartStore } from "../../hooks/use-cart";
 import { ProductLineData } from "../../types";
 import { Cart } from "../../components/cart";
+import { CartCounter } from "../../components/cart-counter";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
 export default function DevCartPage() {
@@ -29,7 +30,8 @@ export default function DevCartPage() {
             </section>
             {/* /Produits */}
             {/* Panier */}
-            <Cart></Cart>
+            <CartCounter/>
+            <Cart/>
             {/* /Panier */}
         </SectionContainer>
     );
