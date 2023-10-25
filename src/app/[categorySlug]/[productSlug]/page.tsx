@@ -49,6 +49,9 @@ const productAttributes: ProductAttribute[] = [
 ];
 
 export default async function ProductPage({ params }: NextPageProps<Props>) {
+  function getGategory(slug: String) {
+
+  }
   return (
     <SectionContainer wrapperClassName="max-w-5xl">
       <BreadCrumbs
