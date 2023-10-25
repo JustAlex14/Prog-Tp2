@@ -10,9 +10,6 @@ import { CartCounter } from "../../components/cart-counter";
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
 export default function DevCartPage() {
-    const lines = useCartStore(state => state.lines);
-
-    
     return (
         <SectionContainer
             className="py-36"
