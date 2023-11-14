@@ -1,5 +1,5 @@
 "use client";
-import { FC, memo, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import { ProductFilters } from "./product-filters";
 import { ProductsCategoryData } from "tp-kit/types";
 import { Button, ProductCardLayout, ProductGridLayout } from "tp-kit/components";
@@ -15,7 +15,38 @@ type Props = {
 
 const ProductList: FC<Props> = memo(function ({ categories, showFilters = false }) {
   const [filters, setFilters] = useState<ProductFiltersResult | undefined>();
-  const filteredCategories = useMemo(() => filterProducts(categories, filters), [filters, categories]);
+  const [filteredCategories, setFilteredCategories] = useState<ProductsCategoryData[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const filteredCategoriesData = async () => {
+      setLoading(true);
+
+      const params = new URLSearchParams()
+      if (filters) {
+        if (filters.search) {
+          params.set("search", filters.search)
+        }
+
+        if (filters.categoriesSlugs.length) {
+          filters.categoriesSlugs.map(cat => params.append("cat", cat))
+        }
+      }
+
+      try {
+        const resp = await fetch(`/api/product-filters?${params.toString()}`)
+        const output = await resp.json();
+        setFilteredCategories(output.categories);
+      }
+      catch (error) {
+        console.error('Error when laoding the data', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    filteredCategoriesData();
+  }, [filters]);
 
   return (
     <div className="flex flex-row gap-8">
@@ -26,7 +57,7 @@ const ProductList: FC<Props> = memo(function ({ categories, showFilters = false 
 
       {/* Grille Produit */}
       <div className="flex-1 space-y-24">
-        {filteredCategories.map((cat) => (
+        {isLoading ? <p>Loading</p> : filteredCategories.map((cat) => (
           <section key={cat.id}>
             <h2 className="text-lg font-semibold mb-8 tracking-tight">
               <Link href={`/${cat.slug}`} className="link">{cat.name} ({cat.products.length})</Link>
