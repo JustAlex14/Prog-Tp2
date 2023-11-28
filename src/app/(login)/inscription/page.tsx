@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mantine/core';
 import Link from 'next/link';
+import { NoticeMessage } from 'tp-kit/components';
 
 const schema = z.object({
   name: z.string().min(2, { message: 'Name should have at least 2 letters' }),
@@ -24,6 +25,19 @@ export default function InscriptionPage() {
   return (
     <Box maw={340} mx="auto" className="shadow-md my-5 bg-white rounded">
       <form onSubmit={form.onSubmit((values: z.infer<typeof schema>) => console.log(values))} className="p-5">
+      <h1 className="mb-3">INSCRIPTION</h1>
+
+      <NoticeMessage
+        message="Votre inscription a bien été prise en compte, vous pouvez vous connecter."
+        onDismiss={function noRefCheck(){}}
+        type="success"
+      />
+      <NoticeMessage
+        message="Une erreur s'est produite !"
+        onDismiss={function noRefCheck(){}}
+        type="error"
+/>
+
       <TextInput
           withAsterisk
           label="Name"

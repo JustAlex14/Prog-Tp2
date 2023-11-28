@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mantine/core';
 import Link from 'next/link';
+import {NoticeMessage, SectionContainer} from "tp-kit/components";
 
 const schema = z.object({
   email: z.string().email({ message: 'Invalid email' }),
@@ -23,7 +24,19 @@ export default function InscriptionPage() {
     
     <Box maw={340} mx="auto" className="shadow-md my-5 bg-white rounded">
       <form onSubmit={form.onSubmit((values: z.infer<typeof schema>) => console.log(values))} className="p-5">
-        
+      <h1 className="mb-3">Connexion</h1>
+
+      <NoticeMessage
+        message="Vous êtes connecté!"
+        onDismiss={function noRefCheck(){}}
+        type="success"
+      />
+      <NoticeMessage
+        message="La connexion n'a pas pu s'effectuer, mail ou mdp invalid"
+        onDismiss={function noRefCheck(){}}
+        type="error"
+      />
+
         <TextInput
           withAsterisk
           label="Email"
