@@ -1,29 +1,20 @@
-"use server"
+"use server";
 
-import { clearCart } from "../hooks/use-cart";
-import { ProductLineData } from "../types";
+import { computeCartTotal, computeLineSubTotal } from "../hooks/use-cart";
+import { CartData } from "../types";
 import prisma from "../utils/prisma";
 
-export async function createOrder(lines : ProductLineData[]) {
-
-    let total = 0;
-    lines.forEach((line) => total += line.qty * line.product.price)
-
-    if (lines.length > 0) {
-        let result = await prisma.order.create({
-            data : {
-                createdAt: new Date(),
-                lines: {
-                    create: lines.map((line) => {
-                        return {
-                            productId: line.product.id,
-                            subtotal: line.product.price*line.qty
-                        }
-                    })
-                },
-                total: total
-            }
-        });
-
+export async function createOrder(cart: CartData) {
+  console.log(await prisma.order.create({
+    data: {
+      total: computeCartTotal(cart.lines),
+      lines: {
+        create: cart.lines.map(line => ({
+          productId: line.product.id,
+          qty: line.qty,
+          subtotal: computeLineSubTotal(line)
+        }))
+      }
     }
+  }));
 }

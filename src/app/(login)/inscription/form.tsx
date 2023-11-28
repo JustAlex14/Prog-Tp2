@@ -6,6 +6,8 @@ import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mant
 import Link from 'next/link';
 import { NoticeMessage, SectionContainer } from 'tp-kit/components';
 import { useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   name: z.string().min(2, { message: 'Le nom doit faire minimum 2 lettres' }),
@@ -25,11 +27,26 @@ export const Form = function () {
 
 
   const [noticeMessage, setNoticeMessage] = useState([]);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
-  function onFormSubmit(values : z.infer<typeof schema>) {
-    console.log(values)
-    if (values.name=="error") {
-      setNoticeMessage([{type: "error", message: "Une erreur s'est produite !"}]);
+  async function onFormSubmit(values : z.infer<typeof schema>) {
+    const handleSignUp = await supabase.auth.signUp({
+            email: values.email,
+            password: values.password,
+            options: {
+                emailRedirectTo: `${location.origin}/auth/callback`,
+                data: {
+                    name : values.name
+                }
+            }
+        })
+    
+    
+
+    console.log(handleSignUp)
+    if (handleSignUp.error) {
+      setNoticeMessage([{type: "error", message: handleSignUp.error.message}]);
     }
     else {
       setNoticeMessage([{type: "success", message: "Votre inscription a bien été prise en compte, vous pouvez vous connecter."}]);
@@ -40,7 +57,7 @@ export const Form = function () {
     <SectionContainer wrapperClassName="max-w-5xl">
       <Box maw={340} mx="auto" className="shadow-md my-5 bg-white rounded">
 
-        <form onSubmit={form.onSubmit((values: z.infer<typeof schema>) => onFormSubmit(values))} className="p-5">
+        <form onSubmit={form.onSubmit(onFormSubmit)} className="p-5">
         <h1 className="mb-3">INSCRIPTION</h1>
         
         {noticeMessage.map((notice, i) => (
