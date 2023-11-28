@@ -20,8 +20,9 @@ export default function InscriptionPage() {
   });
 
   return (
-    <Box maw={340} mx="auto">
-      <form onSubmit={form.onSubmit((values: z.infer<typeof schema>) => console.log(values))}>
+    
+    <Box maw={340} mx="auto" className="shadow-md my-5 bg-white rounded">
+      <form onSubmit={form.onSubmit((values: z.infer<typeof schema>) => console.log(values))} className="p-5">
         
         <TextInput
           withAsterisk
@@ -37,9 +38,9 @@ export default function InscriptionPage() {
         />
 
         
-        <Button type="submit" className="bg-green-600 my-5 item-center hover:bg-green-600" >Se connecter</Button>
+        <Button type="submit" className="bg-green-600 my-5 items-center hover:bg-green-600 h-12" fullWidth="true" >Se connecter</Button>
       </form>
-      <Link href={'../inscription'}> Vous n'avez pas de compte? Créez en un!</Link>
+      <Link href={'../inscription'} className="text-sm text-center text-green"><p className="text-sm text-center text-green"> Vous n'avez pas de compte? Créez en un! </p></Link>
     </Box>
   );
 }
