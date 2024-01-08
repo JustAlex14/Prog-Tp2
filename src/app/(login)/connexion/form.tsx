@@ -6,6 +6,8 @@ import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mant
 import Link from 'next/link';
 import {NoticeMessage, SectionContainer, ZodI18nProvider, useZodI18n} from "tp-kit/components";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 const schema = z.object({
   email: z.string().email().nonempty(),
@@ -13,6 +15,9 @@ const schema = z.object({
 });
 
 export const Form = function () {
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+
   useZodI18n(z);
   const form = useForm({
     validate: zodResolver(schema),
@@ -24,15 +29,20 @@ export const Form = function () {
 
   const [noticeMessage, setNoticeMessage] = useState([]);
 
-  function onFormSubmit(values : z.infer<typeof schema>) {
+  async function onFormSubmit(values : z.infer<typeof schema>) {
     console.log(values)
-    if (values.name=="error") {
+
+    const signin = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    if (signin.error) {
       setNoticeMessage([{type: "error", message: "La connexion n'a pas pu s'effectuer, mail ou mdp invalid"}]);
     }
     else {
       setNoticeMessage([{type: "success", message: "Vous êtes connecté!"}]);
-
-      
+      router.push('/mon-compte')
     }
   }
 
