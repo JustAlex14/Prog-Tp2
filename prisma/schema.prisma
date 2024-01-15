@@ -52,6 +52,8 @@ model Order {
   total Float
 
   lines OrderLines[]
+
+  userId String @db.Uuid() 
 }
 
 model OrderLines {
