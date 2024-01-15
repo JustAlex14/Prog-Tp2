@@ -44,7 +44,7 @@ export const Form = function () {
     
     
 
-    console.log(handleSignUp)
+    
     if (handleSignUp.error) {
       setNoticeMessage([{type: "error", message: handleSignUp.error.message}]);
     }

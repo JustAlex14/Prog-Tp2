@@ -6,6 +6,7 @@ import { getUser } from "../../utils/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/dist/client/components/redirect";
+import { ButtonSignOut } from "./ButtonSignOut";
 
 
 export default async function Layout({ children }: { children: ReactNode }) {
@@ -13,13 +14,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const supaClient = createServerComponentClient({cookies});
   const user = await getUser(supaClient);
 
-
-  const clientSignOut = async() => {
-    await supaClient.auth.signOut()
-    redirect("/connexion");
-  }
-
   if (user == null) {
+    
     redirect("/connexion");
   }
 
@@ -39,7 +35,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                   <br/>
                   Email : {user?.email}
               </p>
-              <Button variant="outline" fullWidth="true" className="mt-10" onClick={clientSignOut}>Se déconnecter</Button>
+              <ButtonSignOut/>
           </div>
           <div className="bg-white rounded-lg p-6 shadow-lg flex-auto w-96">
               <OrderTable orders={orders}/>
