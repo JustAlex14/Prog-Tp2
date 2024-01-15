@@ -1,20 +1,26 @@
 "use server";
 
+import { Success } from "tp-kit/components/notice-message.stories";
 import { computeCartTotal, computeLineSubTotal } from "../hooks/use-cart";
 import { CartData } from "../types";
 import prisma from "../utils/prisma";
 import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
 import {cookies} from "next/headers";
 
-export async function createOrder(cart: CartData) {
+export interface createOrderResponse {
+  error: string | null,
+  success: boolean
+}
+
+export async function createOrder(cart: CartData) : Promise<createOrderResponse> {
   const supabase = createServerComponentClient({ cookies });
   const {data} = await supabase.auth.getUser();
   const userId = data.user?.id;
 
   if (!userId) {
-    console.log("User not logged in");
-    }
-
+    return {error : "User not logged in", success: false}
+  }
+  
   console.log(
       await prisma.order.create({
         data: {
@@ -30,4 +36,5 @@ export async function createOrder(cart: CartData) {
         },
       })
   );
+  return {error : "User not logged in", success: true }
 }
