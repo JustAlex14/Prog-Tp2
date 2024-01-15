@@ -10,9 +10,12 @@ import { ButtonSignOut } from "./ButtonSignOut";
 
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const orders = await prisma.order.findMany({});
   const supaClient = createServerComponentClient({cookies});
   const user = await getUser(supaClient);
+  const orders = await prisma.order.findMany({
+    where : { userId : user?.id }
+  });
+  
   
   if (user == null) {
     redirect("/connexion");
