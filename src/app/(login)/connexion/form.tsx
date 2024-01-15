@@ -8,6 +8,7 @@ import {NoticeMessage, SectionContainer, ZodI18nProvider, useZodI18n} from "tp-k
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getUser } from '../../../utils/supabase';
 
 const schema = z.object({
   email: z.string().email().nonempty(),
@@ -46,6 +47,17 @@ export const Form = function () {
       router.push('/mon-compte')
     }
   }
+
+  async function checkConnection() {
+
+    const user = await getUser(supabase);
+    if (user != null) {
+      router.refresh();
+      router.push('/mon-compte')
+    }
+  }
+
+  checkConnection()
 
   return (
     <SectionContainer wrapperClassName="max-w-5xl">

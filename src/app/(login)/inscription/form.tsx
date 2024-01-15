@@ -42,9 +42,6 @@ export const Form = function () {
             }
         })
     
-    
-
-    
     if (handleSignUp.error) {
       setNoticeMessage([{type: "error", message: handleSignUp.error.message}]);
     }
@@ -52,6 +49,17 @@ export const Form = function () {
       setNoticeMessage([{type: "success", message: "Votre inscription a bien été prise en compte, vous pouvez vous connecter."}]);
     }
   }
+
+  async function checkConnection() {
+
+    const user = await getUser(supabase);
+    if (user != null) {
+      router.refresh();
+      router.push('/mon-compte')
+    }
+  }
+
+  checkConnection()
 
   return (
     <SectionContainer wrapperClassName="max-w-5xl">

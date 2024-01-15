@@ -15,7 +15,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const user = await getUser(supaClient);
 
   if (user == null) {
-    
     redirect("/connexion");
   }
 
