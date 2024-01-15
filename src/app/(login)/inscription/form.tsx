@@ -8,6 +8,7 @@ import { NoticeMessage, SectionContainer } from 'tp-kit/components';
 import { useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
+import { getUser } from '../../../utils/supabase';
 
 const schema = z.object({
   name: z.string().min(2, { message: 'Le nom doit faire minimum 2 lettres' }),

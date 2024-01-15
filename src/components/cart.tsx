@@ -1,6 +1,6 @@
 import { FC, ReactNode, memo, useCallback, useState } from "react";
 import { clearCart, computeCartTotal, removeLine, updateLine, useCartStore } from "../hooks/use-cart";
-import { Button, FormattedPrice, NoticeMessage, ProductCartLine } from "tp-kit/components";
+import { Button, FormattedPrice, ProductCartLine } from "tp-kit/components";
 import { createOrder } from "../actions/create-orders";
 
 

@@ -1,16 +1,37 @@
 "use client";
 
-import { FC, memo, Fragment } from "react";
+import { FC, memo, Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuBar, Button } from "tp-kit/components";
 import { ShoppingBag, X, User } from "@phosphor-icons/react";
 import { Cart } from "./cart";
 import { CartCounter } from "./cart-counter";
 import Link from "next/link";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { getUser } from "../utils/supabase";
 
 type Props = {};
 
 const Menu: FC<Props> = memo(function () {
+  const supabase = createClientComponentClient();
+  const [isSession, setIsSession] = useState(false);
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN") {
+        setIsSession(true)
+    } else if (event === "SIGNED_OUT") {
+        setIsSession(false)
+    }
+  });
+
+  async function checkConnection() {
+    const user = await getUser(supabase);
+    setIsSession(user!=null)
+    
+  }
+
+  checkConnection();
+
   return (
     <MenuBar
       trailing={
@@ -20,7 +41,8 @@ const Menu: FC<Props> = memo(function () {
               <User size="18" weight="bold" />
             </Button>
           </Link>
-        <Popover as="div" className="flex justify-end">
+        {isSession ? <>
+          <Popover as="div" className="flex justify-end">
           {({ open }) => (
             <>
               <Popover.Button as={Button} variant={"ghost"} className={"!rounded-full !p-0 flex justify-center items-center aspect-square relative text-3xl"}>
@@ -43,14 +65,15 @@ const Menu: FC<Props> = memo(function () {
               >
                 <Popover.Panel className="absolute left-0 sm:left-auto right-0 top-full z-10 mt-6 sm:w-full sm:max-w-sm">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white p-8">
-                    
-                    <Cart></Cart>
+                  <Cart></Cart>
                   </div>
                 </Popover.Panel>
               </Transition>
             </>
           )}
         </Popover>
+        </> : null}
+        
         </div>
       }
     />
