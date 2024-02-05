@@ -4,7 +4,7 @@ import { Schema, z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mantine/core';
 import Link from 'next/link';
-import { NoticeMessage, SectionContainer } from 'tp-kit/components';
+import { NoticeMessage, NoticeMessageData, SectionContainer } from 'tp-kit/components';
 import { useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
@@ -27,7 +27,7 @@ export const Form = function () {
   });
 
 
-  const [noticeMessage, setNoticeMessage] = useState([]);
+  const [noticeMessage, setNoticeMessage] = useState<NoticeMessageData[]>([]);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
@@ -95,8 +95,8 @@ export const Form = function () {
           />
 
           
-          <Button type="submit" className="bg-green-600 my-5 items-center hover:bg-green-600 h-12" fullWidth="true" >S'inscrire</Button>
-          <Link href={'../connexion'}> <p className="text-sm text-center text-green">Vous avez un compte? Connectez vous!</p></Link>
+          <Button type="submit" className="bg-green-600 my-5 items-center hover:bg-green-600 h-12" fullWidth >S&apos;inscrire</Button>
+          <Link href={"../connexion"}> <p className="text-sm text-center text-green">Vous avez un compte? Connectez vous!</p></Link>
         </form>
         
       </Box>

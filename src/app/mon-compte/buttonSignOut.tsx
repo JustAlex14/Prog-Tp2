@@ -18,8 +18,9 @@ const ButtonSignOut: FC = memo(function() {
     }
 
     return (
-        <Button variant="outline" fullWidth="true" className="mt-10" onClick={clientSignOut}>Se déconnecter</Button>
+        <Button variant="outline" fullWidth className="mt-10" onClick={clientSignOut}>Se déconnecter</Button>
     )
 })
 
+ButtonSignOut.displayName = "ButtonSignOut";
 export {ButtonSignOut};

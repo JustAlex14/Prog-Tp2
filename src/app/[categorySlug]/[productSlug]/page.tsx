@@ -58,6 +58,27 @@ export async function generateMetadata({
   };
 }
 
+export async function generateStaticParams({
+  params: {categorySlug, productSlug},}:{params: { categorySlug: string, productSlug: string }}) {
+
+  const products = await prisma.product.findMany({
+    select: {
+      slug: true,
+      category: {
+        select: {
+          slug: true
+        }
+      }
+    }
+  })
+
+  return products.map((product) => ({
+    productSlug: product.slug,
+    categorySlug: product.category.slug
+  }))
+
+}
+
 const productAttributes: ProductAttribute[] = [
   { label: "Intensité", rating: 3 },
   { label: "Volupté", rating: 2 },

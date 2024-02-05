@@ -6,13 +6,15 @@ import { getUser } from "../../utils/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/dist/client/components/redirect";
-import { ButtonSignOut } from "./ButtonSignOut";
+import { ButtonSignOut } from "./buttonSignOut";
 
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const supaClient = createServerComponentClient({cookies});
   const user = await getUser(supaClient);
-  const orders = await prisma.order.findMany();
+  const orders = await prisma.order.findMany({
+    where : { userId : user?.id }
+  });
   
   
   if (user == null) {

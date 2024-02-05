@@ -1,12 +1,12 @@
 import { FC, ReactNode, memo, useCallback, useState } from "react";
 import { clearCart, computeCartTotal, removeLine, updateLine, useCartStore } from "../hooks/use-cart";
-import { Button, FormattedPrice, ProductCartLine } from "tp-kit/components";
+import { Button, FormattedPrice, NoticeMessage, NoticeMessageData, ProductCartLine } from "tp-kit/components";
 import { createOrder } from "../actions/create-orders";
 
 
 const Cart: FC = props => {
     const lines = useCartStore(state => state.lines);
-    const [noticeMessage, setNoticeMessage] = useState([]);
+    const [noticeMessage, setNoticeMessage] = useState<NoticeMessageData[]>([]);
 
     const handleCreateOrder = useCallback(async () => {
         const output = await createOrder(useCartStore.getState());
@@ -23,7 +23,7 @@ const Cart: FC = props => {
           <NoticeMessage key={i}{...notice}/>
         ))}
         {lines.map(cartline => (
-            <ProductCartLine product={cartline.product} qty={cartline.qty} onDelete={() => removeLine(cartline.product.id)} onQtyChange={value => {updateLine({...cartline, qty: value})}}></ProductCartLine>
+            <ProductCartLine product={cartline.product} qty={cartline.qty} onDelete={() => removeLine(cartline.product.id)} onQtyChange={value => {updateLine({...cartline, qty: value})}} className = '' key={null}></ProductCartLine>
         ))}
         
         <div className="flex justify-between rounded-lg h-auto text-default overflow-hidden">

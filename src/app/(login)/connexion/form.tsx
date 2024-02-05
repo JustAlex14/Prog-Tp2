@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { NumberInput, TextInput, Button, Box, Group, PasswordInput } from '@mantine/core';
 import Link from 'next/link';
-import {NoticeMessage, SectionContainer, ZodI18nProvider, useZodI18n} from "tp-kit/components";
+import {NoticeMessage, NoticeMessageData, SectionContainer, ZodI18nProvider, useZodI18n} from "tp-kit/components";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -28,7 +28,7 @@ export const Form = function () {
     },
   });
 
-  const [noticeMessage, setNoticeMessage] = useState([]);
+  const [noticeMessage, setNoticeMessage] = useState<NoticeMessageData[]>([]);
 
   async function onFormSubmit(values : z.infer<typeof schema>) {
     console.log(values)
@@ -84,8 +84,8 @@ export const Form = function () {
           />
 
           
-          <Button type="submit" className="bg-green-600 my-5 items-center hover:bg-green-600 h-12" fullWidth="true" >Se connecter</Button>
-          <Link href={'../inscription'}><p className="text-sm text-center text-green"> Vous n'avez pas de compte? Créez en un! </p></Link>
+          <Button type="submit" className="bg-green-600 my-5 items-center hover:bg-green-600 h-12" fullWidth >Se connecter</Button>
+          <Link href={"../inscription"}><p className="text-sm text-center text-green"> Vous n&apos;avez pas de compte? Créez en un! </p></Link>
         </form>
       </Box>
     </SectionContainer>
