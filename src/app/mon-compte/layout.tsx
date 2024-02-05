@@ -12,9 +12,7 @@ import { ButtonSignOut } from "./ButtonSignOut";
 export default async function Layout({ children }: { children: ReactNode }) {
   const supaClient = createServerComponentClient({cookies});
   const user = await getUser(supaClient);
-  const orders = await prisma.order.findMany({
-    where : { userId : user?.id }
-  });
+  const orders = await prisma.order.findMany();
   
   
   if (user == null) {
